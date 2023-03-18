@@ -2,7 +2,7 @@ version: '3'
 
 services:
   postgres:
-    platform: linux
+    platform: linux/arm64
     image: postgres:15
     restart: always
     ports:
@@ -12,7 +12,7 @@ services:
     env_file: .env
 
   redis:
-    platform: linux
+    platform: linux/arm64
     image: redis:alpine
     restart: always
     command: ["sh", "-c", "redis-server --requirepass \"password\""]
@@ -22,7 +22,7 @@ services:
       - '6379:6379'
 
   botpress:
-    platform: linux
+    platform: linux/arm64
     image: botpress/server:latest
     ports:
       - '3001:3000'
@@ -42,7 +42,7 @@ services:
 
 
   chatwoot-sidekiq:
-    platform: linux
+    platform: linux/arm64
     image: ${CHATWOOT_IMAGE}
     env_file: .env
     depends_on:
