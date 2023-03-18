@@ -22,7 +22,6 @@ services:
       - '6379:6379'
 
   botpress:
-    platform: linux/arm64
     image: botpress/server:latest
     ports:
       - '3001:3000'
@@ -42,7 +41,6 @@ services:
 
 
   chatwoot-sidekiq:
-    platform: linux/arm64
     image: ${CHATWOOT_IMAGE}
     env_file: .env
     depends_on:
