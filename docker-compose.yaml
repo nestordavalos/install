@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres:/data/postgres
+    env_file: .env
+
+  redis:
+    image: redis:alpine
+    restart: always
+    command: ["sh", "-c", "redis-server --requirepass \"password\""]
+    volumes:
+      - redis:/data/redis
+    ports:
+      - '6379:6379'
+
+  botpress:
+    image: botpress/server:latest
+    ports:
+      - '3001:3000'
+
+  chatwoot:
+    image: ${CHATWOOT_IMAGE}
+    volumes:
+      - storage:/app/storage
+    env_file: .env
+    ports:
+      - '3002:3000'
+    depends_on:
+      - postgres
+      - redis
+      - unoapi
+    command: sh -c "bundle exec rails db:chatwoot_prepare; bundle exec rails s -b 0.0.0.0 -p 3000"
+
+
+  chatwoot-sidekiq:
+    image: ${CHATWOOT_IMAGE}
+    env_file: .env
+    depends_on:
+      - postgres
+      - redis
+      - chatwoot
+      - unoapi
+    command: sh -c "bundle exec sidekiq -C config/sidekiq.yml"
+
+  chatwoot-botpress_bridge:
+    image: douglara/chatwoot-botpress-bridge:1
+    env_file: .env
+    ports:
+      - '3003:3000'
+  unoapi:
+    image: ${UNOAPI_IMAGE}
+    volumes:
+      - data:/home/u/app/data
+    env_file: .env
+    ports:
+      - '9000:9876'
+
+volumes:
+  postgres:
+  redis:
+  storage:
+  data:
