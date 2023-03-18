@@ -2,7 +2,7 @@ version: '3'
 
 services:
   postgres:
-    platform: linux/arm64
+
     image: postgres:15
     restart: always
     ports:
@@ -12,7 +12,7 @@ services:
     env_file: .env
 
   redis:
-    platform: linux/arm64
+
     image: redis:alpine
     restart: always
     command: ["sh", "-c", "redis-server --requirepass \"password\""]
