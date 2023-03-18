@@ -42,6 +42,7 @@ services:
 
 
   chatwoot-sidekiq:
+    platform: linux/arm64/v8
     image: ${CHATWOOT_IMAGE}
     env_file: .env
     depends_on:
@@ -57,7 +58,6 @@ services:
     ports:
       - '3003:3000'
   unoapi:
-    platform: linux/arm64/v8
     image: ${UNOAPI_IMAGE}
     volumes:
       - data:/home/u/app/data
