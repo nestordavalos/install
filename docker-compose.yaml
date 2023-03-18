@@ -12,6 +12,7 @@ services:
     env_file: .env
 
   redis:
+    platform: linux/arm64/v8
     image: redis:alpine
     restart: always
     command: ["sh", "-c", "redis-server --requirepass \"password\""]
