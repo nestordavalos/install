@@ -12,6 +12,7 @@ services:
     env_file: .env
 
   redis:
+    platform: linux/arm64/v8
     image: redis:alpine
     restart: always
     command: ["sh", "-c", "redis-server --requirepass \"password\""]
@@ -21,6 +22,7 @@ services:
       - '6379:6379'
 
   botpress:
+    platform: linux/arm64/v8
     image: botpress/server:latest
     ports:
       - '3001:3000'
@@ -55,6 +57,7 @@ services:
     ports:
       - '3003:3000'
   unoapi:
+    platform: linux/arm64/v8
     image: ${UNOAPI_IMAGE}
     volumes:
       - data:/home/u/app/data
